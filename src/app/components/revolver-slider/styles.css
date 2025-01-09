@@ -1,6 +1,6 @@
 :root {
-    --size: 975px;
-    --item-size: 475px;
+    --size: 1200px;
+    --item-size: 600px;
 }
 
 .revolver-slider {
@@ -22,7 +22,7 @@
     top: calc(50% - calc(var(--item-size) / 2 * 9 / 16));
     @apply flex flex-col gap-2.5 items-center;
     @apply opacity-30 blur-[2px] transition-all;
-    @apply cursor-pointer;
+    @apply cursor-pointer pointer-events-none;
 }
 
 .rs-item .rs-item__image {
@@ -44,6 +44,7 @@
 
 .rs-item.active {
     @apply opacity-100 blur-0;
+    @apply pointer-events-auto;
 }
 
 .rs-item.active .rs-item__image {
@@ -80,5 +81,58 @@
 }
 
 .pop-overlay {
-    @apply fixed left-0 top-0 w-screen h-screen bg-white/60 backdrop-blur-md transition-all;
+    @apply fixed left-0 top-0 w-screen h-screen bg-green-50/80 backdrop-blur-md transition-all;
+}
+
+.slider-wrapper {
+    @apply size-full relative;
+}
+
+.slider-outer {
+    @apply w-full absolute left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%];
+}
+
+.slide-item {
+    @apply size-full flex flex-col gap-3 items-center py-4;
+}
+
+.slide-image-outer {
+    @apply size-full p-2 bg-white rounded-xl overflow-hidden border-2;
+    @apply transition-all duration-300 delay-100 scale-90;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.slide-image-inner {
+    @apply relative size-full aspect-video rounded-lg overflow-hidden;
+}
+
+.slide-image-inner img {
+    @apply aspect-video object-cover;
+}
+
+.slide-text {
+    @apply text-sm text-gray-500 flex gap-3;
+    @apply transition-all duration-500 delay-200;
+    @apply translate-y-4 opacity-0;
+}
+
+.slide-text .st-name {
+    @apply text-black;
+}
+
+.slide-item.slide-active .slide-image-outer {
+    @apply scale-100;
+}
+
+.slide-item.slide-active .slide-text {
+    @apply translate-y-0 opacity-100;
+}
+
+.nav-slider {
+    @apply z-10 w-[70%] absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] flex justify-between gap-4;
+}
+
+.nav-btn {
+    @apply rounded-full bg-slate-400 p-2 aspect-square text-white;
+    @apply transition-all active:scale-90;
 }

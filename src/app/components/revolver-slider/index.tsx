@@ -5,6 +5,7 @@ import "./styles.css";
 import useScrollDirection from "./useScrollDirection";
 import RevolverItem from "./item";
 import { AnimatePresence, motion } from "framer-motion";
+import PopupItem from "./popup";
 
 interface IImage {
   src: string;
@@ -96,7 +97,7 @@ export const LIST: LISTItem[] = [
         name: "francesco-ungaro",
       },
       {
-        src: "florian-van-duyn-Dm-qxdynoEc-unsplash.jpg",
+        src: "/carousel/florian-van-duyn-Dm-qxdynoEc-unsplash.jpg",
         name: "florian-van-duyn",
       },
     ],
@@ -106,10 +107,10 @@ export const LIST: LISTItem[] = [
 export default function RevolverSlider() {
   const [step, setStep] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<false | number>(false);
 
-  function doOpen() {
-    setOpen(true);
+  function doOpen(index: number) {
+    setOpen(index);
   }
 
   function doClose() {
@@ -124,7 +125,7 @@ export default function RevolverSlider() {
   }
 
   useEffect(() => {
-    if (scrollDirection && !open) {
+    if (scrollDirection && open === false) {
       if (scrollDirection === "up") setStep((curr) => curr + 1);
       else setStep((curr) => curr - 1);
     }
@@ -136,56 +137,45 @@ export default function RevolverSlider() {
 
   return (
     // width from (itemWidth/2) * 6 =
-    <div className="w-[1500px] h-screen fixed top-[50%] right-0 -translate-y-[50%] translate-x-[60%] overflow-y-hidden overflow-x-visible  flex items-center justify-center">
-      <motion.div
-        variants={{
-          initial: { rotate: 15, opacity: 0 },
-          animate: {
-            opacity: 1,
-            rotate: 0,
-            transition: { duration: 1, ease: "easeOut", delay: 0.25 },
-          },
-        }}
-        initial="initial"
-        animate="animate"
-        exit="initial"
-      >
-        <div
-          className={["revolver-slider"].join(" ")}
-          data-step={step}
-          style={{
-            transform: `rotate(${step * 60}deg)`,
+    <section>
+      <div className="w-[1900px] h-screen fixed top-[50%] right-0 -translate-y-[50%] translate-x-[70%] overflow-y-hidden overflow-x-visible  flex items-center justify-center">
+        <motion.div
+          variants={{
+            initial: { rotate: 10, opacity: 0 },
+            animate: {
+              opacity: 1,
+              rotate: 0,
+              transition: { duration: 0.75, ease: "easeOut", delay: 0.25 },
+            },
           }}
+          initial="initial"
+          animate="animate"
+          exit="initial"
         >
-          {LIST.map((v, i) => (
-            <RevolverItem
-              key={i}
-              index={i}
-              activeIndex={activeIndex}
-              onClick={doOpen}
-              {...v}
-            />
-          ))}
-        </div>
-      </motion.div>
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            variants={{
-              hidden: { opacity: 0, filter: "blur(10px)" },
-              visible: { opacity: 1, filter: "blur(0px)" },
+          <div
+            className={["revolver-slider"].join(" ")}
+            data-step={step}
+            style={{
+              transform: `rotate(${step * 60}deg)`,
             }}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-            className="pop-overlay"
           >
-            <button type="button" onClick={doClose}>
-              Close
-            </button>
-          </motion.div>
+            {[...LIST, ...LIST].map((v, i) => (
+              <RevolverItem
+                key={i}
+                index={i}
+                activeIndex={activeIndex}
+                onClick={doOpen}
+                {...v}
+              />
+            ))}
+          </div>
+        </motion.div>
+      </div>
+      <AnimatePresence>
+        {typeof open === "number" && (
+          <PopupItem onClose={doClose} item={LIST[open]} />
         )}
       </AnimatePresence>
-    </div>
+    </section>
   );
 }
