@@ -1,0 +1,84 @@
+:root {
+    --size: 975px;
+    --item-size: 475px;
+}
+
+.revolver-slider {
+    position: relative;
+    width: var(--size);
+    height: var(--size);
+    margin: 50px auto;
+    /* border-radius: 50%; */
+    transform-origin: center;
+    transition: 0.25s ease-in-out;
+}
+
+.rs-item {
+    position: absolute;
+    width: var(--item-size);
+    aspect-ratio: 16/9;
+    transform-origin: center;
+    left: calc(50% - var(--item-size) / 2);
+    top: calc(50% - calc(var(--item-size) / 2 * 9 / 16));
+    @apply flex flex-col gap-2.5 items-center;
+    @apply opacity-30 blur-[2px] transition-all;
+    @apply cursor-pointer;
+}
+
+.rs-item .rs-item__image {
+    @apply relative w-full aspect-[16/9] bg-white rounded-xl p-2 overflow-hidden transition-all duration-200;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0);
+}
+
+.rs-item .rs-item__image img {
+    @apply object-cover;
+}
+
+.rs-item .rs-item__text {
+    @apply text-xs text-center flex gap-2.5 text-slate-500;
+}
+
+.rs-item .rs-item__text .name {
+    @apply text-black;
+}
+
+.rs-item.active {
+    @apply opacity-100 blur-0;
+}
+
+.rs-item.active .rs-item__image {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.rs-item .rs-item__image:hover {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.rs-item:nth-child(1) {
+    transform: rotate(270deg) translate(0, calc(var(--size) / 2 * -1))
+        rotate(-270deg);
+}
+.rs-item:nth-child(2) {
+    transform: rotate(330deg) translate(0, calc(var(--size) / 2 * -1))
+        rotate(-270deg);
+}
+.rs-item:nth-child(3) {
+    transform: rotate(390deg) translate(0, calc(var(--size) / 2 * -1))
+        rotate(-270deg);
+}
+.rs-item:nth-child(4) {
+    transform: rotate(450deg) translate(0, calc(var(--size) / 2 * -1))
+        rotate(-270deg);
+}
+.rs-item:nth-child(5) {
+    transform: rotate(510deg) translate(0, calc(var(--size) / 2 * -1))
+        rotate(-270deg);
+}
+.rs-item:nth-child(6) {
+    transform: rotate(570deg) translate(0, calc(var(--size) / 2 * -1))
+        rotate(-270deg);
+}
+
+.pop-overlay {
+    @apply fixed left-0 top-0 w-screen h-screen bg-white/60 backdrop-blur-md transition-all;
+}
